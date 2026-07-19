@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #14161c;
+  --color-paper: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-indigo: #2e3a8c;
+  --color-indigo-dark: #1f2861;
+  --color-signal: #ff4e1f;
+  --color-circuit: #12b5a6;
+  --color-line: #d8dce3;
+  --color-muted: #5c6070;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
