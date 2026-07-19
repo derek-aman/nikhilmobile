@@ -1,0 +1,20 @@
+import express from 'express';
+import {
+  getServices,
+  getServiceById,
+  createService,
+  updateService,
+  toggleServiceStatus,
+  deleteService
+} from '../controllers/serviceController.js';
+
+const router = express.Router();
+
+router.get('/', getServices);
+router.get('/:id', getServiceById);
+router.post('/', createService);
+router.put('/:id', updateService);
+router.patch('/:id/toggle', toggleServiceStatus);
+router.delete('/:id', deleteService);
+
+export default router;
