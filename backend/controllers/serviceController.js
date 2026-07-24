@@ -29,6 +29,9 @@ export const getServiceById = async (req, res) => {
 // POST /api/services  (admin only)
 export const createService = async (req, res) => {
   try {
+    if (Number(req.body.priceMax) < Number(req.body.priceMin)) {
+      return res.status(400).json({ message: 'priceMax must be >= priceMin' });
+    }
     const service = await Service.create(req.body);
     res.status(201).json(service);
   } catch (err) {
@@ -39,6 +42,11 @@ export const createService = async (req, res) => {
 // PUT /api/services/:id  (admin only)
 export const updateService = async (req, res) => {
   try {
+    if (req.body.priceMin !== undefined && req.body.priceMax !== undefined) {
+      if (Number(req.body.priceMax) < Number(req.body.priceMin)) {
+        return res.status(400).json({ message: 'priceMax must be >= priceMin' });
+      }
+    }
     const service = await Service.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
@@ -50,7 +58,7 @@ export const updateService = async (req, res) => {
   }
 };
 
-// PATCH /api/services/:id/toggle  (admin only - quick active/inactive toggle, matches demo UI)
+// PATCH /api/services/:id/toggle  (admin only)
 export const toggleServiceStatus = async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);

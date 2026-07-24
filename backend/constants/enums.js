@@ -20,3 +20,17 @@ export const ServiceCategory = [
   'BACK_GLASS',
   'OTHER'
 ];
+
+
+export const ProductCategory = [
+  'ACCESSORY',
+  'SPARE_PART',
+  'SKIN',
+  'CHARGER',
+  'CABLE',
+  'CASE',
+  'EARPHONE',
+  'OTHER'
+];
+
+export const OrderStatus = ['PENDING', 'CONFIRMED', 'READY_FOR_PICKUP', 'COMPLETED', 'CANCELLED'];

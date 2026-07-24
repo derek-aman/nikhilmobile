@@ -49,7 +49,8 @@ export const createAppointment = async (req, res) => {
     if (isWalkIn && req.admin) {
       customerId = req.body.customerId; // admin provides existing customer or creates one separately
     } else {
-      const customer = await getOrCreateCustomer(req.auth.userId);
+      const { userId } = req.auth();
+      const customer = await getOrCreateCustomer(userId);
       customerId = customer._id;
     }
 

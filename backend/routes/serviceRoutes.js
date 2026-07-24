@@ -1,4 +1,5 @@
 import express from 'express';
+import { protectAdmin } from '../middleware/authMiddleware.js';
 import {
   getServices,
   getServiceById,
@@ -12,9 +13,9 @@ const router = express.Router();
 
 router.get('/', getServices);
 router.get('/:id', getServiceById);
-router.post('/', createService);
-router.put('/:id', updateService);
-router.patch('/:id/toggle', toggleServiceStatus);
-router.delete('/:id', deleteService);
+router.post('/', protectAdmin, createService);
+router.put('/:id', protectAdmin, updateService);
+router.patch('/:id/toggle', protectAdmin, toggleServiceStatus);
+router.delete('/:id', protectAdmin, deleteService);
 
 export default router;
