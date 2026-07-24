@@ -54,6 +54,11 @@ export const createOrder = async (req, res) => {
     for (const item of items) {
       await Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.quantity } });
     }
+    await notifyAllAdmins({
+        title: 'New Order',
+        message: `${order.orderId} — new order received ($${totalAmount})`,
+        link: '/admin/orders'
+        });
 
     res.status(201).json(order);
   } catch (err) {
@@ -91,6 +96,12 @@ export const updateOrderStatus = async (req, res) => {
     const { status } = req.body;
     const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true, runValidators: true });
     if (!order) return res.status(404).json({ message: 'Order not found' });
+    const populated = await order.populate('customerId');
+    await notifyCustomer(populated.customerId, {
+        title: 'Order Status Updated',
+        message: `Your order ${order.orderId} is now: ${status.replace(/_/g, ' ')}`,
+        link: '/track-order'
+    });
     res.status(200).json(order);
   } catch (err) {
     res.status(400).json({ message: 'Failed to update order', error: err.message });

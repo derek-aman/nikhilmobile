@@ -4,6 +4,7 @@ import TimeSlot from '../models/TimeSlot.js';
 import BlockedDate from '../models/BlockedDate.js';
 import { generateBookingId } from '../utils/generateBookingId.js';
 import { getOrCreateCustomer } from './customerController.js';
+import { notifyCustomer, notifyAllAdmins } from '../utils/notify.js';
 
 // POST /api/appointments  (protected - customer)
 export const createAppointment = async (req, res) => {
@@ -70,6 +71,11 @@ export const createAppointment = async (req, res) => {
     });
 
     const populated = await appointment.populate(['deviceId', 'serviceIds']);
+    await notifyAllAdmins({
+      title: 'New Booking',
+      message: `${appointment.bookingId} — new repair booking received`,
+      link: '/admin/appointments'
+    });
     res.status(201).json(populated);
   } catch (err) {
     res.status(500).json({ message: 'Failed to create appointment', error: err.message });
@@ -119,6 +125,12 @@ export const updateAppointmentStatus = async (req, res) => {
       { status },
       { new: true, runValidators: true }
     );
+    const populated = await appointment.populate('customerId');
+    await notifyCustomer(populated.customerId, {
+      title: 'Repair Status Updated',
+      message: `Your booking ${appointment.bookingId} is now: ${status.replace(/_/g, ' ')}`,
+      link: '/track-repair'
+    });
     if (!appointment) return res.status(404).json({ message: 'Appointment not found' });
     res.status(200).json(appointment);
   } catch (err) {

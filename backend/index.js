@@ -9,7 +9,7 @@ import customerRoutes from './routes/customerRoutes.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
 import timeSlotRoutes from './routes/timeSlotRoutes.js';
 import adminAuthRoutes from './routes/adminAuthRoutes.js';
-
+import notificationRoutes from './routes/notificationRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 
@@ -32,6 +32,7 @@ app.use('/api/timeslots', timeSlotRoutes);
 app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 
 
